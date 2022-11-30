@@ -9,7 +9,6 @@ export const mockedAPIResponse = {
 
 export const handlers = [
   rest.get('https://api.themoviedb.org/3/discover/movie', (req, res, ctx) => {
-    console.log('BEING CALLED');
     // const { page } = req.url.searchParams;
 
     return res(ctx.status(200), ctx.json({ ...mockedAPIResponse }));
