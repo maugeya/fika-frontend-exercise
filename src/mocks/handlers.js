@@ -2,7 +2,15 @@ import { rest } from 'msw';
 
 export const mockedAPIResponse = {
   page: 1,
-  results: [{ adult: false, genre_ids: [1, 2], id: 1, title: '28 days later' }],
+  results: [
+    {
+      adult: false,
+      genre_ids: [1, 2],
+      id: 1,
+      title: '28 days later',
+      poster_path: '/some-path.png',
+    },
+  ],
   total_pages: 1,
   total_results: 1,
 };
