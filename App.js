@@ -2,14 +2,14 @@ import { SafeAreaView, StyleSheet, StatusBar, View, Text } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 
-import MovieList from './components/MovieList/MovieList';
+import { MovieList } from './components/MovieList/MovieList';
 
 const queryClient = new QueryClient();
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#222532',
     alignItems: 'center',
   },
   header: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eee',
+    backgroundColor: '#078080',
   },
   title: {
     fontSize: 20,
