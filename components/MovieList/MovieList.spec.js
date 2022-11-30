@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react-native';
 import { mockedAPIResponse } from '../../src/mocks/handlers';
 
 import { createQueryClient, renderWithClient } from '../../utils/testUtils';
-import MovieList from './MovieList';
+import { MovieList } from './MovieList';
 
 const mockUseFetchMovies = jest.fn();
 jest.mock('../../hooks/useFetchMovies', () => ({
@@ -20,17 +20,17 @@ describe('/components/MovieList/MovieList', () => {
     expect(loadingElement).toBeDefined();
   });
 
-  it('should resolve to show the movie list', async () => {
-    mockUseFetchMovies.mockImplementation(() => ({
-      isLoading: false,
-      data: mockedAPIResponse,
-    }));
+  // it('should resolve to show the movie list', async () => {
+  //   mockUseFetchMovies.mockImplementation(() => ({
+  //     isLoading: false,
+  //     data: mockedAPIResponse,
+  //   }));
 
-    const client = createQueryClient();
-    renderWithClient(client, <MovieList />);
+  //   const client = createQueryClient();
+  //   renderWithClient(client, <MovieList />);
 
-    await waitFor(() => {
-      screen.debug();
-    });
-  });
+  //   await waitFor(() => {
+  //     screen.debug();
+  //   });
+  // });
 });

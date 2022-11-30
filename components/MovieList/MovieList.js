@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import axios from 'axios';
-import { Text, View, StyleSheet } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
 import React from 'react';
+import { MovieCard } from './MovieCard';
+
 import { TEST_IDS } from '../../utils/constants';
 
 import { useFetchMovies } from '../../hooks/useFetchMovies';
 
 const styles = StyleSheet.create({
+  container: {},
   header: {
     height: 50,
     width: '100%',
@@ -15,13 +16,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#eee',
   },
+  flatListContainer: {},
   title: {
     fontSize: 20,
     fontWeight: 'bold',
   },
+  separator: {
+    height: 10,
+  },
 });
 
-export default function MovieList() {
+function MovieList() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading, error } = useFetchMovies(currentPage);
@@ -40,11 +45,23 @@ export default function MovieList() {
       </View>
     );
 
+  const renderMovieCard = ({ item }) => {
+    return <MovieCard item={item} />;
+  };
+
   return (
     <React.Fragment>
-      <View testID={TEST_IDS.MOVIE_LIST_CONTAINER}>
-        <Text>{data.results[0].title}</Text>
+      <View testID={TEST_IDS.MOVIE_LIST_CONTAINER} style={styles.container}>
+        <FlatList
+          contentContainerStyle={styles.flatListContainer}
+          data={data.results}
+          renderItem={renderMovieCard}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          keyExtractor={(item) => item.id}
+        />
       </View>
     </React.Fragment>
   );
 }
+
+export { MovieList };
