@@ -1,7 +1,10 @@
 import '@testing-library/jest-native/extend-expect';
 import { server } from './src/mocks/server';
 
-beforeAll(() => server.listen());
+beforeAll(() => {
+  jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+  server.listen();
+});
 
 afterEach(() => server.resetHandlers());
 
