@@ -1,26 +1,41 @@
 import { render } from '@testing-library/react-native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  QueryCache,
+} from '@tanstack/react-query';
 
-export const createQueryClient = () => {
+export function generateQueryClient() {
   return new QueryClient({
+    queryCache: new QueryCache({}),
+    defaultOptions: {
+      queries: {
+        staleTime: 600000,
+        cacheTime: 900000,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+      },
+    },
+    retry: false,
     log: console.log,
     warn: console.warn,
     error: process.env.NODE_ENV === 'test' ? () => {} : console.error,
-    cacheTime: 'Infinity',
-    retry: false,
   });
+}
+
+const generateTestQueryClient = () => {
+  const client = generateQueryClient();
+
+  const options = client.getDefaultOptions();
+
+  options.queries = { ...options.queries, retry: false };
+  return client;
 };
 
-export function renderWithClient(client, children) {
-  const { rerender, ...result } = render(
-    <QueryClientProvider client={client}>{children}</QueryClientProvider>
+export function renderWithQueryClient(ui) {
+  const queryClient = generateTestQueryClient();
+  return render(
+    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
   );
-
-  return {
-    ...result,
-    rerender: (rerenderUi) =>
-      rerender(
-        <QueryClientProvider client={client}>{rerenderUi}</QueryClientProvider>
-      ),
-  };
 }
