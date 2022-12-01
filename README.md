@@ -1,5 +1,10 @@
 # FikaSearch
 
+
+https://user-images.githubusercontent.com/24406890/205122276-ffe037b8-dd9e-496b-b28f-ebc9a4aedb02.mp4
+
+
+
 ## Get started
 
 - Install node modules with
