@@ -5,11 +5,8 @@ import {
   QueryClientProvider,
   QueryCache,
 } from '@tanstack/react-query';
-import { rest } from 'msw';
 
 import { useFetchMovies } from './useFetchMovies';
-import { mockMoviesAPIRes } from '../src/mocks/handlers';
-import { server } from '../src/mocks/server';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({}),

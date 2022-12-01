@@ -2,7 +2,6 @@ import {
   render,
   screen,
   fireEvent,
-  act,
   waitFor,
 } from '@testing-library/react-native';
 import { TEST_IDS } from '../../utils/constants';
