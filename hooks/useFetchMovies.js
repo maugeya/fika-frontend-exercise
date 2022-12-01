@@ -1,17 +1,54 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-const useFetchMovies = (currentPage) => {
-  return useQuery({
-    queryKey: ['movies', currentPage],
-    queryFn: () =>
-      axios
-        .get(
-          `https://api.themoviedb.org/3/discover/movie?api_key=d432b933ecc6d5642d8d2befbc40c7ac&language=en-US&page=${currentPage}&include_adult=false`
-        )
-        .then((res) => res.data),
-    keepPreviousData: true,
+import {
+  generateURL,
+  generateQueryKey,
+  formatMovieData,
+} from '../utils/queryUtils';
+import { GENRES_URL } from '../utils/constants';
+
+const useFetchMovies = (currentPage, searchTerm) => {
+  const url = generateURL(currentPage, searchTerm);
+  const queryKey = generateQueryKey(currentPage, searchTerm);
+
+  const {
+    data: genresData,
+    isLoading: isLoadingGenres,
+    error: genresError,
+  } = useQuery({
+    queryKey: ['genres'],
+    queryFn: () => axios.get(GENRES_URL).then((res) => res.data),
   });
+
+  const {
+    data = { results: [] },
+    isLoading: isLoadingMovies,
+    error: moviesError,
+  } = useQuery({
+    queryKey: queryKey,
+    queryFn: () => axios.get(url).then((res) => res.data),
+    keepPreviousData: true,
+    stale: 60000,
+    notifyOnChangeProps: 'all',
+  });
+
+  let errors = [];
+  if (moviesError) errors.push(moviesError);
+  if (genresError) errors.push(genresError);
+
+  let movieCardData = [];
+
+  if (data && genresData) {
+    movieCardData = formatMovieData(data, genresData);
+  }
+
+  return {
+    movieCardData,
+    isLoading: isLoadingGenres || isLoadingMovies,
+    errors,
+    totalPages: data.total_pages,
+  };
 };
 
 export { useFetchMovies };
