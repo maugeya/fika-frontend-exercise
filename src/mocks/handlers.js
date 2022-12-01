@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-export const mockedAPIResponse = {
+export const mockMoviesAPIRes = {
   page: 1,
   results: [
     {
@@ -15,10 +15,21 @@ export const mockedAPIResponse = {
   total_results: 1,
 };
 
+export const mockGenresAPIRes = {
+  genres: [
+    { id: 0, name: 'Family' },
+    { id: 1, name: 'Horror' },
+    { id: 2, name: 'Fantasy' },
+    { id: 3, name: 'Romantic comedy' },
+    { id: 4, name: 'Action' },
+  ],
+};
+
 export const handlers = [
   rest.get('https://api.themoviedb.org/3/discover/movie', (req, res, ctx) => {
-    // const { page } = req.url.searchParams;
-
-    return res(ctx.status(200), ctx.json({ ...mockedAPIResponse }));
+    return res(ctx.json(mockMoviesAPIRes));
+  }),
+  rest.get('https://api.themoviedb.org/3/genre/movie/list', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockGenresAPIRes));
   }),
 ];
